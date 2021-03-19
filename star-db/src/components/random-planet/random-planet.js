@@ -40,9 +40,9 @@ export default class RandomPlanet extends Component {
   updatePlanet = () => {
     console.log('update');
     const id = Math.floor(Math.random()*17) + 2;
-    this.setState({
-      id: id,
-    })
+    // this.setState({
+    //   id: id,
+    // })
     this.swapiService
       .getPlanet(id)
       .then(this.onPlanetLoaded)
@@ -50,13 +50,13 @@ export default class RandomPlanet extends Component {
   };
 
   render() {
-    const { planet, loading, error, id } = this.state;
+    const { planet, loading, error } = this.state;
 
     const hasData = !(loading || error);
 
     const errorMessage = error ? <ErrorIndicator/> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = hasData ? <PlanetView planet={planet} id={id}/> : null;
+    const content = hasData ? <PlanetView planet={planet}/> : null;
 
     return (
       <div className="random-planet jumbotron rounded">
@@ -68,9 +68,9 @@ export default class RandomPlanet extends Component {
   }
 }
 
-const PlanetView = ({ planet, id }) => {
+const PlanetView = ({ planet }) => {
 
-  const { name, population,
+  const { id, name, population,
     rotationPeriod, diameter } = planet;
     // console.log(id)
 
