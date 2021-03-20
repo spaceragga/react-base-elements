@@ -15,18 +15,20 @@ export default class RandomPlanet extends Component {
     loading: true
   };
 
-  constructor() {
-    super();
+  componentDidMount() {
     this.updatePlanet();
-    this.interval = setInterval(this.updatePlanet, 2500);
-    // clearInterval(this.interval);
+    this.interval = setInterval(this.updatePlanet, 10000);
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   onPlanetLoaded = (planet) => {
     this.setState({
       planet,
       loading: false,
-      error: false,
+      error: false
     });
   };
 
@@ -38,9 +40,7 @@ export default class RandomPlanet extends Component {
   };
 
   updatePlanet = () => {
-    console.log('update');
     const id = Math.floor(Math.random()*17) + 2;
-
     this.swapiService
       .getPlanet(id)
       .then(this.onPlanetLoaded)
@@ -74,7 +74,8 @@ const PlanetView = ({ planet }) => {
   return (
     <React.Fragment>
       <img className="planet-image"
-           src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
+           src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+           alt="planet" />
       <div>
         <h4>{name}</h4>
         <ul className="list-group list-group-flush">
@@ -95,6 +96,3 @@ const PlanetView = ({ planet }) => {
     </React.Fragment>
   );
 };
-
-
-
