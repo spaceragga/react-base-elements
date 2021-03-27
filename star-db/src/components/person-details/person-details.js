@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 
 import './person-details.css';
 import SwapiService from "../../services/swapi-service";
-import Spinner from '../spinner';
+import ErrorButton from "../error-button/error-button";
 
 export default class PersonDetails extends Component {
 
   swapiService = new SwapiService();
 
   state = {
-    person: null,
-    loading: false
+    person: null
   };
 
   componentDidMount() {
@@ -19,9 +18,6 @@ export default class PersonDetails extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.personId !== prevProps.personId) {
-      this.setState({
-        loading: true
-      });
       this.updatePerson();
     }
   }
@@ -36,28 +32,19 @@ export default class PersonDetails extends Component {
       .getPerson(personId)
       .then((person) => {
         this.setState({ person });
-      })
-      .then(() => {
-        this.setState({
-          loading: false
-        });
       });
   }
 
   render() {
-    const { loading } = this.state;
 
-    if (!this.state.person) {
+    const { person } = this.state;
+    if (!person) {
       return <span>Select a person from a list</span>;
     }
 
     const { id, name, gender,
-              birthYear, eyeColor } = this.state.person;
-    if(loading) {
-      return(
-        <Spinner />
-      )
-    } else {
+              birthYear, eyeColor } = person;
+
     return (
       <div className="person-details card">
         <img className="person-image"
@@ -65,7 +52,7 @@ export default class PersonDetails extends Component {
           alt="character"/>
 
         <div className="card-body">
-          <h4>{name} {this.props.personId}</h4>
+          <h4>{name}</h4>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
               <span className="term">Gender</span>
@@ -80,9 +67,9 @@ export default class PersonDetails extends Component {
               <span>{eyeColor}</span>
             </li>
           </ul>
+          <ErrorButton />
         </div>
       </div>
     )
-    }
   }
 }
