@@ -1,36 +1,48 @@
-import React, { useContext } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-const MyContext = React.createContext();
-
 const App = () => {
-    return (
-        <MyContext.Provider value='Hello World 123'>
-            <Child />
-        </MyContext.Provider>
-    );
+    const [value, setValue] = useState(0);
+    const [visible, setVisible] = useState(true);
+
+    if (visible) {
+        return (
+            <div>
+                <button 
+                    onClick={() => setValue((v) => v + 1)}>+</button>
+                <button 
+                    onClick={() => setVisible(false)}>hide</button>
+                <ClassCounter value={value} />
+                <HookCounter value={value} />
+            </div>
+        );
+    } else {
+        return <button onClick={() => setVisible(true)}>show</button>
+    }
 };
 
-const Child = () => {
-    const value = useContext(MyContext);
-
-    return <p>{value}</p>;
+const HookCounter = ({ value }) => {
+    return <p> {value} </p>;
 };
 
-// без использовани хука
-//
-// const Child = () => {
-//     return (
-//         <MyContext.Consumer>
-//             { (value) => {
-//                 return (
-//                     <p> {value} </p>
-//                 )
-//             }
-//             }
-//         </MyContext.Consumer>
-//     );
-// };
+class ClassCounter extends Component {
+
+    componentDidMount() {
+        console.log('class: mount');
+    }
+
+    componentDidUpdate(props) {
+        console.log('class: update');
+    }
+
+    componentWillUnmount() {
+        console.log('class: update');
+    }
+
+    render() {
+        return <p>{this.props.value}</p>;
+    }
+}
 
 ReactDOM.render(
     <React.StrictMode>
