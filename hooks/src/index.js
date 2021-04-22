@@ -1,43 +1,41 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 
+const MyContext = React.createContext();
+
 const App = () => {
-  return (
-    <div>
-      <HookSwitcher />
-    </div>
-  );
+    return (
+        <MyContext.Provider value='Hello World 123'>
+            <Child />
+        </MyContext.Provider>
+    );
 };
 
-const HookSwitcher = () => {
+const Child = () => {
+    const value = useContext(MyContext);
 
-  const [ color, setColor ] = useState('gray');
-  const [ fontSize, setFontSize ] = useState(14);
-
-  return (
-    <div style={{ padding: '10px',
-     backgroundColor: color,
-     fontSize: `${fontSize}px` }}>
-       It's Alive
-      <button
-        onClick={() => setColor('gray')}>
-        Dark
-      </button>
-      <button
-        onClick={() => setColor('white')}>
-        Light
-      </button>
-      <button
-        onClick={() => setFontSize((s) => s + 2)}>
-        +
-      </button>
-    </div>
-  );
+    return <p>{value}</p>;
 };
+
+// без использовани хука
+//
+// const Child = () => {
+//     return (
+//         <MyContext.Consumer>
+//             { (value) => {
+//                 return (
+//                     <p> {value} </p>
+//                 )
+//             }
+//             }
+//         </MyContext.Consumer>
+//     );
+// };
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+  
