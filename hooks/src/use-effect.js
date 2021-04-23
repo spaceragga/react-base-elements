@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
                     onClick={() => setValue((v) => v + 1)}>+</button>
                 <button 
                     onClick={() => setVisible(false)}>hide</button>
-                {/* <ClassCounter value={value} /> */}
+                <ClassCounter value={value} />
                 <HookCounter value={value} />
             </div>
         );
@@ -24,30 +24,31 @@ const App = () => {
 const HookCounter = ({ value }) => {
 
     useEffect(() => {
-        console.log('mount');
-    }, []);
-    
-    useEffect(() => {
-        console.log('update');
-    });
-
-    useEffect(() => {
-
-        return (() => {
-            console.log('unmount');
-        })
-    }, []);
-    
-    
-// useEffect(() => {
-//     console.log('mount');
-//     return () => console.log('unmount');
-// }, []);
-
-// useEffect(() => () => console.log('unmount'), []);
+        console.log('useEffect()');
+        return () => console.log('clear');
+    }, [ value ]);
 
     return <p> {value} </p>;
 };
+
+class ClassCounter extends Component {
+
+    componentDidMount() {
+        console.log('class: mount');
+    }
+
+    componentDidUpdate(props) {
+        console.log('class: update');
+    }
+
+    componentWillUnmount() {
+        console.log('class: update');
+    }
+
+    render() {
+        return <p>{this.props.value}</p>;
+    }
+}
 
 ReactDOM.render(
     <React.StrictMode>
