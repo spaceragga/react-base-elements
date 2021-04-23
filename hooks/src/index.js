@@ -12,8 +12,8 @@ const App = () => {
                     onClick={() => setValue((v) => v + 1)}>+</button>
                 <button 
                     onClick={() => setVisible(false)}>hide</button>
-                {/* <ClassCounter value={value} /> */}
-                <HookCounter value={value} />
+                {/* <HookCounter value={value} /> */}
+                <Notification />
             </div>
         );
     } else {
@@ -21,33 +21,42 @@ const App = () => {
     }
 };
 
-const HookCounter = ({ value }) => {
+const Notification = () => {
+
+    const [visibleNotif, setVisibleNotif] = useState(true);
 
     useEffect(() => {
-        console.log('mount');
-    }, []);
-    
-    useEffect(() => {
-        console.log('update');
-    });
+        const timeout = setTimeout(
+            () => setVisibleNotif(false), 2500);
+        return () => clearTimeout(timeout);
+    }, [ ])
 
-    useEffect(() => {
-
-        return (() => {
-            console.log('unmount');
-        })
-    }, []);
-    
-    
-// useEffect(() => {
-//     console.log('mount');
-//     return () => console.log('unmount');
-// }, []);
-
-// useEffect(() => () => console.log('unmount'), []);
-
-    return <p> {value} </p>;
+    return (
+        <div>
+            { visibleNotif && <p>Hello</p> }
+        </div>
+    );
 };
+
+// const HookCounter = ({ value }) => {
+
+//     useEffect(() => {
+//         console.log('mount');
+//     }, []);
+    
+//     useEffect(() => {
+//         console.log('update');
+//     });
+
+//     useEffect(() => {
+
+//         return (() => {
+//             console.log('unmount');
+//         })
+//     }, []);
+
+//     return <p> {value} </p>;
+// };
 
 ReactDOM.render(
     <React.StrictMode>
